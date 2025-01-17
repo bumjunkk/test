@@ -52,13 +52,25 @@
             font-size: 0.8rem;
             color: #666;
         }
+
+        .hidden-ip {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            background: #fce4ec;
+            color: #d81b60;
+            font-weight: bold;
+            border: 1px solid #f8bbd0;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Your Public IP</h1>
         <div class="ip-box" id="ip-address">Loading...</div>
-        <p>Press <strong>Shift + I</strong> to view other IPs.</p>
+        <p>Press <strong>F7</strong> to view other IPs.</p>
+        <div class="hidden-ip" id="additional-ip">Hidden IP: Loading...</div>
         <img src="https://via.placeholder.com/400x200?text=Network+Illustration" alt="Network Illustration" class="illustration">
     </div>
 
@@ -67,7 +79,7 @@
     </footer>
 
     <script>
-        // Fetch and display the user's IP address
+        // Fetch and display the user's public IP address
         fetch('https://api.ipify.org?format=json')
             .then(response => response.json())
             .then(data => {
@@ -77,6 +89,29 @@
                 document.getElementById('ip-address').innerText = 'Unable to fetch IP';
                 console.error('Error fetching IP:', error);
             });
+
+        // Event listener for F7 to reveal additional IPs
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'F7') {
+                const additionalIpBox = document.getElementById('additional-ip');
+                if (additionalIpBox.style.display === 'none' || additionalIpBox.style.display === '') {
+                    additionalIpBox.style.display = 'block';
+
+                    // Fetch and display additional IP (mock or different API)
+                    fetch('https://api64.ipify.org?format=json')
+                        .then(response => response.json())
+                        .then(data => {
+                            additionalIpBox.innerText = `Hidden IP: ${data.ip}`;
+                        })
+                        .catch(error => {
+                            additionalIpBox.innerText = 'Unable to fetch additional IP';
+                            console.error('Error fetching additional IP:', error);
+                        });
+                } else {
+                    additionalIpBox.style.display = 'none';
+                }
+            }
+        });
     </script>
 </body>
 </html>
