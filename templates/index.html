@@ -69,7 +69,7 @@
     <div class="container">
         <h1>Your Public IP</h1>
         <div class="ip-box" id="ip-address">Loading...</div>
-        <p>Press <strong>F7</strong> to view other IPs.</p>
+        <p>Press <strong>F1</strong> to view the IP, <strong>F2</strong> to hide it.</p>
         <div class="hidden-ip" id="additional-ip">Hidden IP: Loading...</div>
         <img src="https://via.placeholder.com/400x200?text=Network+Illustration" alt="Network Illustration" class="illustration">
     </div>
@@ -90,26 +90,27 @@
                 console.error('Error fetching IP:', error);
             });
 
-        // Event listener for F7 to reveal additional IPs
+        // Event listener for F1 to reveal IP and F2 to hide IP
         document.addEventListener('keydown', function(event) {
-            if (event.key === 'F7') {
-                const additionalIpBox = document.getElementById('additional-ip');
-                if (additionalIpBox.style.display === 'none' || additionalIpBox.style.display === '') {
-                    additionalIpBox.style.display = 'block';
+            const additionalIpBox = document.getElementById('additional-ip');
+            
+            if (event.key === 'F1') {
+                // F1: Show the hidden IP
+                additionalIpBox.style.display = 'block';
 
-                    // Fetch and display additional IP (mock or different API)
-                    fetch('https://api64.ipify.org?format=json')
-                        .then(response => response.json())
-                        .then(data => {
-                            additionalIpBox.innerText = `Hidden IP: ${data.ip}`;
-                        })
-                        .catch(error => {
-                            additionalIpBox.innerText = 'Unable to fetch additional IP';
-                            console.error('Error fetching additional IP:', error);
-                        });
-                } else {
-                    additionalIpBox.style.display = 'none';
-                }
+                // Fetch and display additional IP (mock or different API)
+                fetch('https://api64.ipify.org?format=json')
+                    .then(response => response.json())
+                    .then(data => {
+                        additionalIpBox.innerText = `Hidden IP: ${data.ip}`;
+                    })
+                    .catch(error => {
+                        additionalIpBox.innerText = 'Unable to fetch additional IP';
+                        console.error('Error fetching additional IP:', error);
+                    });
+            } else if (event.key === 'F2') {
+                // F2: Hide the IP
+                additionalIpBox.style.display = 'none';
             }
         });
     </script>
