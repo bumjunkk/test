@@ -5,28 +5,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IP Logger</title>
     <style>
-        /* 버튼을 숨깁니다 */
-        #show-ip-button {
-            display: none;
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            background: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .ip-box {
+            margin: 20px 0;
+            padding: 10px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            font-weight: bold;
+            border: 1px solid #c8e6c9;
+            border-radius: 5px;
+        }
+
+        .illustration {
+            margin-top: 20px;
+            max-width: 100%;
+            height: auto;
+        }
+
+        footer {
+            margin-top: 30px;
+            font-size: 0.8rem;
+            color: #666;
         }
     </style>
-    <script>
-        // 키보드 단축키로 IP 표시 (예: Shift + I)
-        document.addEventListener('keydown', async function (event) {
-            if (event.shiftKey && event.key === 'I') {
-                const response = await fetch('/get_ips');
-                const ips = await response.json();
-
-                // 결과를 HTML에 표시
-                const resultDiv = document.getElementById('result');
-                resultDiv.innerHTML = `<h3>Connected IPs:</h3><ul>${ips.map(ip => `<li>${ip}</li>`).join('')}</ul>`;
-            }
-        });
-    </script>
 </head>
 <body>
-    <h1>Welcome to the IP Logger</h1>
-    <button id="show-ip-button" onclick="showIPs()">Show IPs</button>
-    <div id="result"></div>
+    <div class="container">
+        <h1>Your Public IP</h1>
+        <div class="ip-box" id="ip-address">Loading...</div>
+        <p>Press <strong>Shift + I</strong> to view other IPs.</p>
+        <img src="https://via.placeholder.com/400x200?text=Network+Illustration" alt="Network Illustration" class="illustration">
+    </div>
+
+    <footer>
+        Powered by YourApp - Stay connected securely
+    </footer>
+
+    <script>
+        // Fetch and display the user's IP address
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('ip-address').innerText = data.ip;
+            })
+            .catch(error => {
+                document.getElementById('ip-address').innerText = 'Unable to fetch IP';
+                console.error('Error fetching IP:', error);
+            });
+    </script>
 </body>
 </html>
