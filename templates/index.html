@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Logger</title>
+    <style>
+        /* 버튼을 숨깁니다 */
+        #show-ip-button {
+            display: none;
+        }
+    </style>
+    <script>
+        // 키보드 단축키로 IP 표시 (예: Shift + I)
+        document.addEventListener('keydown', async function (event) {
+            if (event.shiftKey && event.key === 'I') {
+                const response = await fetch('/get_ips');
+                const ips = await response.json();
+
+                // 결과를 HTML에 표시
+                const resultDiv = document.getElementById('result');
+                resultDiv.innerHTML = `<h3>Connected IPs:</h3><ul>${ips.map(ip => `<li>${ip}</li>`).join('')}</ul>`;
+            }
+        });
+    </script>
+</head>
+<body>
+    <h1>Welcome to the IP Logger</h1>
+    <p>Press <strong>Shift + I</strong> to see all connected IPs:</p>
+    <button id="show-ip-button" onclick="showIPs()">Show IPs</button>
+    <div id="result"></div>
+</body>
+</html>
